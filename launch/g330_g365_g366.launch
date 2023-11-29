@@ -1,0 +1,149 @@
+<launch>
+
+  <node pkg="ess_imu_driver" type="ess_imu_driver_node" name="ess_imu_driver_node"
+	output="screen">
+
+    <!-- The name of the serial port to read IMU data from. -->
+    <param name="port" type="string" value="/dev/ttyUSB0" />
+
+    <!-- ext_sel: These bits select the function of GPIO2 terminal to be GPIO2,
+   External Counter Reset Input, or External Trigger Input.
+   The time_correction parameter below requires ext_sel = 1 (External Counter Reset Input)
+   and a 1PPS signal connected to GPIO2
+	 0: GPIO2
+	 1: External Counter Reset Input
+	 2: External Trigger Input -->
+    <param name="ext_sel" type="int" value="1" />
+    <!-- ext_pol: Selects the polarity of the External Counter Reset Input or
+	 External Trigger Input function.
+	 0: Positive Logic (Rising Edge)
+	 1: Negative Logic (Falling Edge) -->
+    <param name="ext_pol" type="int" value="0" />
+    <!-- drdy_on: Selects the function of the GPIO1 terminal for either GPIO1 or Data Ready.
+                  Data Ready must be ON for using the SPI interface
+	 0: GPIO1
+	 1: Data Ready Signal -->
+    <param name="drdy_on" type="int" value="1" />
+    <!-- drdy_pol: Selects the polarity of the Data Ready signal when selected in DRDY_ON above.
+                   Data Ready must be active HIGH for using this software
+	 0: Active Low
+	 1: Active High -->
+    <param name="drdy_pol" type="int" value="1" />
+
+    <!-- dout_rate: Specifies the data output rate.
+	 The following lists the data output rate option with the recommended number of filter taps.
+
+   For G320/G330/G354/G364/G365/G366/G370
+	 Samples per sec.    Recommended Filter
+	 0x00 :2000Sps       TAP>=0
+	 0x01 :1000Sps       TAP>=2
+	 0x02 :500Sps        TAP>=4
+	 0x03 :250Sps        TAP>=8
+	 0x04 :125Sps        TAP>=16
+	 0x05 :62.5Sps       TAP>=32
+	 0x06 :31.25Sps      TAP>=64
+	 0x07 :15.625Sps     TAP=128
+	 0x08 :400 Sps       TAP>=8
+	 0x09 :200 Sps       TAP>=16
+	 0x0A :100 Sps       TAP>=32
+	 0x0B :80 Sps        TAP>=32
+	 0x0C :50 Sps        TAP>=64
+	 0x0D :40 Sps        TAP>=64
+	 0x0E :25 Sps        TAP=128
+	 0x0F :20 Sps        TAP=128
+
+   For V340:
+   Samples per sec.    Recommended Filter
+	 0x01 :1000Sps       TAP>=1
+	 0x02 :500Sps        TAP>=2
+	 0x03 :250Sps        TAP>=4
+	 0x04 :125Sps        TAP>=8
+	 0x05 :62.5Sps       TAP>=16
+	 0x06 :31.25Sps      TAP=32 -->
+    <param name="dout_rate" type="int" value="4" />
+
+    <!-- Specifies the type of filter (moving average filter and FIR Kaiser filter) and TAP setting.
+	 For the FIR Kaiser filter, these bits also selects the cutoff frequency fc in Hz.
+
+   For G320/G330/G354/G364/G365/G366/G370
+	 0: Moving average filter TAP=0
+	 1: Moving average filter TAP=2
+	 2: Moving average filter TAP=4
+	 3: Moving average filter TAP=8
+	 4: Moving average filter TAP=16
+	 5: Moving average filter TAP=32
+	 6: Moving average filter TAP=64
+	 7: Moving average filter TAP=128
+	 8: FIR Kaiser filter (parameter=8) TAP=32 and fc=50
+	 9: FIR Kaiser filter (parameter=8) TAP=32 and fc=100
+	 10: FIR Kaiser filter (parameter=8) TAP=32 and fc=200
+	 11: FIR Kaiser filter (parameter=8) TAP=32 and fc=400
+	 12: FIR Kaiser filter (parameter=8) TAP=64 and fc=50
+	 13: FIR Kaiser filter (parameter=8) TAP=64 and fc=100
+	 14: FIR Kaiser filter (parameter=8) TAP=64 and fc=200
+	 15: FIR Kaiser filter (parameter=8) TAP=64 and fc=400
+	 16: FIR Kaiser filter (parameter=8) TAP=128 and fc=50
+	 17: FIR Kaiser filter (parameter=8) TAP=128 and fc=100
+	 18: FIR Kaiser filter (parameter=8) TAP=128 and fc=200
+	 19: FIR Kaiser filter (parameter=8) TAP=128 and fc=400
+
+   For V340:
+	 2: Moving average filter TAP=1
+	 3: Moving average filter TAP=2
+	 4: Moving average filter TAP=4
+	 5: Moving average filter TAP=8
+	 6: Moving average filter TAP=16
+	 7: Moving average filter TAP=32 -->
+    <param name="filter_sel" type="int" value="5" />
+
+    <!-- Enables or disables the following sensor outputs. For G330/G365/G366 only, qtn_out or atti_out can be set 1 = enable -->
+    <param name="flag_out" type="int" value="1" />
+    <param name="temp_out" type="int" value="1" />
+    <param name="gyro_out" type="int" value="1" />
+    <param name="accel_out" type="int" value="1" />
+    <param name="gyro_delta_out" type="int" value="0" />
+    <param name="accel_delta_out" type="int" value="0" />
+    <param name="qtn_out" type="int" value="1" />
+    <param name="atti_out" type="int" value="0" />
+    <param name="gpio_out" type="int" value="0" />
+    <param name="count_out" type="int" value="1" />
+    <param name="checksum_out" type="int" value="1" />
+
+    <!-- Selects whether the output of the following is 32 or 16 bit.
+	 0: 16 bit
+	 1: 32 bit -->
+    <param name="temp_bit" type="int" value="1" />
+    <param name="gyro_bit" type="int" value="1" />
+    <param name="accel_bit" type="int" value="1" />
+    <param name="gyro_delta_bit" type="int" value="1" />
+    <param name="accel_delta_bit" type="int" value="1" />
+    <param name="qtn_bit" type="int" value="1" />
+    <param name="atti_bit" type="int" value="1" />
+
+    <!-- Whether or not to invert the bits of the following outputs. -->
+    <param name="invert_xgyro" type="int" value="0" />
+    <param name="invert_ygyro" type="int" value="0" />
+    <param name="invert_zgyro" type="int" value="0" />
+    <param name="invert_xaccel" type="int" value="0" />
+    <param name="invert_yaccel" type="int" value="0" />
+    <param name="invert_zaccel" type="int" value="0" />
+
+    <!-- Attitude configuration. For G330/G365/G366 only, atti_mode = 0 = inclination, 1 = euler or quaternion -->
+    <!-- Refer to Table 7.2 Attitude Output Axis Conversion. atti_conv=0 is X/Y/Z=Forward/Left/Up atti_conv=2 is X/-Y/-Z=Forward/Left/Up -->
+    <!-- atti_profile = 0=General 1=Vehicle 2=Construction Machinery. Can only be nonzero for G330, G365, G366 -->
+    <param name="atti_mode" type="int" value="1" />
+    <param name="atti_conv" type="int" value="0" />
+    <param name="atti_profile" type="int" value="0" />
+
+    <!-- Corrects the timestamp using the reset count field in the IMU message.
+   This function is still experimental.
+   This function requires the above parameter ext_sel = 1 (External Counter Reset)
+   This assumes that the IMU is pulsed with GNSS 1PPS on GPIO2, when the system time is beginning a new second. -->
+    <param name="time_correction" type="int" value="0" />
+
+    <!-- Remap topic to /imu/data. -->
+    <remap from="epson_imu" to="imu/data"/>
+		<remap from="epson_tempc" to="imu/tempc"/>
+  </node>
+
+</launch>
