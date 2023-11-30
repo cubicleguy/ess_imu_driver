@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>ess_imu_driver</name>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <description>ROS package for Epson IMU based on C++ wrapper of Linux C driver</description>
 
   <maintainer email="raymond.chow@ea.epson.com">Raymond Chow</maintainer>
